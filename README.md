@@ -4,7 +4,6 @@ Welcome to my Sticky Notes Chrome Extension! This is a little project I built be
 
 So, I decided to create this extension! 📝
 
----
 
 ## What It Does
 
@@ -14,13 +13,11 @@ So, I decided to create this extension! 📝
 - **➕ and 🗑️ Buttons**: Quickly add new notes or delete ones you no longer need.
 - **Simple Design**: No clutter, just functional sticky notes.
 
----
 
 ## Known Issues
 
 This extension is still evolving! For a list of known limitations and planned fixes, check the [Issues tab](https://github.com/larsenwald/Sticky-Notes-Extension/issues).
 
----
 
 ## How to Use It
 
@@ -35,7 +32,6 @@ This extension is still evolving! For a list of known limitations and planned fi
 - Drag the header to move notes or resize them using the bottom-right corner.
 - Delete individual notes with the 🗑️ button or clear all notes via the `...` menu.
 
----
 
 ## What's In the Code
 
@@ -45,7 +41,6 @@ This extension is built using:
 
 Everything is modular and easy to understand (I hope). If you’re a developer, feel free to poke around the code and improve it. I’d love to hear what you think!
 
----
 
 ## How to Get Involved
 
@@ -54,7 +49,6 @@ I made this project mostly for myself, but it’s open for anyone who wants to u
 2. **Suggest Features**: Have an idea that would make this even better? Let me know, and I’ll see what I can do.
 3. **Contribute**: If you’re a developer, feel free to fork the repo, make improvements, and submit a pull request.
 
----
 
 ## Closing Thoughts
 
