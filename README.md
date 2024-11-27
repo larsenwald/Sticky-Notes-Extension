@@ -50,7 +50,7 @@ I made this project mostly for myself, but it’s open for anyone who wants to u
 3. **Contribute**: If you’re a developer, feel free to fork the repo, make improvements, and submit a pull request.
 
 
-## Closing Thoughts
+## Enjoy!
 
 This extension was born out of a small annoyance that turned into a fun little coding journey. It’s simple, functional, and (I think) pretty cool. If you’re someone who loves reading online and wants a lightweight way to take notes, I hope this extension makes your life a little easier.
 
