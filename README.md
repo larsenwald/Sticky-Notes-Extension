@@ -1,8 +1,8 @@
 # Sticky Notes Chrome Extension
 
-Welcome to my Sticky Notes Chrome Extension! This is a little project I built because I've been reading a lot of online textbooks and articles, and I've been wanting a way to leave sticky notes on webpages that don’t vanish when I close the tab or refresh the page. All the bookmarking tools I looked into didn't let me jot down my thoughts directly on the page, so I figured I'd create something **simple** that would feel as natural as sticking a Post-it on a book or a monitor.
+Welcome to my Sticky Notes Chrome Extension! 
 
-So, I decided to create this extension! 📝
+This is a little project I built because I've been reading a lot of online textbooks and articles, and I've been wanting a way to leave sticky notes on webpages that don’t vanish when I close the tab or refresh the page. All the bookmarking tools I looked into didn't let me jot down my thoughts directly on the page, so I figured I'd create something **simple** that would feel as natural as sticking a Post-it on a book or a monitor.
 
 
 ## What It Does
@@ -54,4 +54,4 @@ I made this project mostly for myself, but it’s open for anyone who wants to u
 
 This extension was born out of a small annoyance that turned into a fun little coding journey. It’s simple, functional, and (I think) pretty cool. If you’re someone who loves reading online and wants a lightweight way to take notes, I hope this extension makes your life a little easier.
 
-Thanks for checking it out, and happy note-taking! ✨
+Thanks for checking it out, and happy note-taking! 📝✨
