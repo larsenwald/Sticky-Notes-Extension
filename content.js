@@ -1,11 +1,13 @@
 console.log("Content script loaded successfully");
 
 let notes = [];
+let contextMenu = null;
 
 // Load saved notes on page load
 chrome.storage.local.get("stickyNotes", (data) => {
   notes = data.stickyNotes || [];
   loadNotesForCurrentUrl();
+  createContextMenu();
 });
 
 // Listen for messages to create a new note
@@ -15,6 +17,53 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ status: "Note created" });
   }
 });
+
+// Create a context menu
+function createContextMenu() {
+  contextMenu = document.createElement("div");
+  contextMenu.className = "context-menu my-extension-hidden";
+  
+  const clearAllOption = document.createElement("div");
+  clearAllOption.className = "context-menu-item";
+  clearAllOption.textContent = "Clear All Notes";
+  clearAllOption.addEventListener("click", () => {
+    document.querySelectorAll(".sticky-note").forEach(note => note.remove());
+    notes = [];
+    saveNotes();
+    hideContextMenu();
+  });
+
+  contextMenu.appendChild(clearAllOption);
+  document.body.appendChild(contextMenu);
+
+  // Close context menu when clicking outside
+  document.addEventListener("click", (event) => {
+    if (contextMenu && !contextMenu.contains(event.target)) {
+      hideContextMenu();
+    }
+  });
+}
+
+// Show context menu
+function showContextMenu(event) {
+  event.preventDefault();
+  
+  // Hide any existing context menus
+  hideContextMenu();
+
+  // Position the context menu
+  contextMenu.style.top = `${event.clientY}px`;
+  contextMenu.style.left = `${event.clientX}px`;
+  
+  contextMenu.classList.remove("my-extension-hidden");
+}
+
+// Hide context menu
+function hideContextMenu() {
+  if (contextMenu) {
+    contextMenu.classList.add("my-extension-hidden");
+  }
+}
 
 // Create a new sticky note
 function createNote(parentX = null, parentY = null) {
@@ -35,13 +84,19 @@ function createNote(parentX = null, parentY = null) {
     spawnY += offsetIncrement;
   }
 
+  const parentNote = notes.find(note => note.x === parentX && note.y === parentY);
+
+  // If a parent note exists, inherit its size
+  const width = parentNote ? parentNote.width : 200;
+  const height = parentNote ? parentNote.height : 150;
+
   const note = {
     id: Date.now(),
     content: "",
     x: spawnX,
     y: spawnY,
-    width: 200,
-    height: 150,
+    width,
+    height,
     url: currentUrl,
   };
 
@@ -64,9 +119,16 @@ function addNoteToPage(note) {
   // Header with buttons
   const header = document.createElement("div");
   header.className = "sticky-note-header";
-  header.appendChild(createButton("+", "add-btn", () => createNote(note.x, note.y)));
-  header.appendChild(createButton("&#128465;", "trash-btn", () => deleteNote(note, noteDiv)));
-  header.appendChild(createDropdownMenu());
+
+  // Add button with emoji (first on the left)
+  header.appendChild(createButton("➕", "add-btn", () => createNote(note.x, note.y)));
+
+  // Grouped buttons for menu and trash (placed at the right)
+  const rightButtons = document.createElement("div");
+  rightButtons.className = "right-buttons";
+  rightButtons.appendChild(createButton("🗑️", "trash-btn", () => deleteNote(note, noteDiv)));
+
+  header.appendChild(rightButtons);
 
   // Textarea for note content
   const textarea = document.createElement("textarea");
@@ -75,6 +137,9 @@ function addNoteToPage(note) {
     note.content = e.target.value;
     saveNotes();
   });
+
+  // Add right-click context menu
+  noteDiv.addEventListener("contextmenu", showContextMenu);
 
   // Append elements and make draggable
   noteDiv.append(header, textarea);
@@ -95,31 +160,9 @@ function addNoteToPage(note) {
 function createButton(content, className, onClick) {
   const button = document.createElement("button");
   button.className = className;
-  button.innerHTML = content;
+  button.textContent = content; // Use textContent to ensure emoji consistency
   button.addEventListener("click", onClick);
   return button;
-}
-
-// Create the dropdown menu
-function createDropdownMenu() {
-  const menuButton = createButton("...", "menu-btn");
-  const dropdown = document.createElement("div");
-  dropdown.className = "dropdown-menu hidden";
-  dropdown.appendChild(
-    createButton("Clear All Notes", "", () => {
-      document.querySelectorAll(".sticky-note").forEach(note => note.remove());
-      notes = [];
-      saveNotes();
-    })
-  );
-
-  menuButton.addEventListener("click", () => {
-    dropdown.classList.toggle("hidden");
-  });
-
-  const wrapper = document.createElement("div");
-  wrapper.append(menuButton, dropdown);
-  return wrapper;
 }
 
 // Delete a specific note
