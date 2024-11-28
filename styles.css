@@ -5,7 +5,7 @@
   background: #ffeb3b; /* Bright yellow background */
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 5px;
+  padding: 0; /* Remove padding to avoid header alignment issues */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   resize: both; /* Enable resizing from any corner */
@@ -15,34 +15,37 @@
 .sticky-note-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  align-items: center; /* Align items vertically */
+  background: #fbc02d; /* Solid darker yellow */
+  padding: 5px;
+  height: 30px; /* Explicit height for consistent layout */
+  border-top-left-radius: 5px; /* Match the note's rounded corners */
+  border-top-right-radius: 5px;
+  box-sizing: border-box; /* Include padding in height/width calculations */
 }
 
 .sticky-note-header button {
-  background: none; /* No background */
-  border: none; /* Remove visible border */
-  padding: 5px; /* Slightly larger padding for better click area */
-  font-size: 16px; /* Larger text/icon size */
-  cursor: pointer; /* Pointer cursor for interactivity */
-  border-radius: 3px; /* Rounded corners for a smoother look */
-  box-shadow: 0 0 3px black; /* Add a bold black shadow around buttons */
-  color: black; /* Ensure button text/icons are clearly visible */
+  all: unset; /* Reset all inherited styles */
+  cursor: pointer; /* Make it interactive */
+  font-size: 18px; /* Consistent emoji size */
+  line-height: 1; /* Remove any additional line height */
+  display: flex;
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  width: 25px; /* Fixed width for consistent spacing */
+  height: 25px; /* Fixed height for alignment */
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; /* Force colorful emoji fonts */
+  color: black; /* Force the icons to always be black */
 }
 
 .sticky-note-header button:hover {
-  box-shadow: 0 0 5px black; /* Slightly larger shadow on hover */
-  transform: scale(1.1); /* Subtle scale effect for interactivity */
-}
-
-.sticky-note-header .trash-btn {
-  display: flex;
-  align-items: center; /* Align icon vertically */
-  justify-content: center; /* Center the icon horizontally */
+  transform: scale(1.2); /* Slight scale effect for interactivity */
+  color: #333; /* Darker black color on hover for subtle feedback */
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 20px;
+  top: 30px; /* Positioned below the header */
   right: 0;
   background: white;
   border: 1px solid #ccc;
@@ -64,7 +67,7 @@
 
 .sticky-note textarea {
   width: calc(100% - 10px); /* Leave padding for the resizer */
-  height: calc(100% - 35px); /* Exclude the header height */
+  height: calc(100% - 40px); /* Exclude the header height */
   border: none;
   background: transparent;
   outline: none;
@@ -73,8 +76,9 @@
   font-size: 14px; /* Set font size */
   color: black; /* Force text color to black */
   margin: 5px; /* Add padding inside the note */
+  box-sizing: border-box; /* Consistent box model */
 }
 
-.hidden {
+.my-extension-hidden {
   display: none;
 }

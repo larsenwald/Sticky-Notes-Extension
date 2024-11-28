@@ -64,9 +64,13 @@ function addNoteToPage(note) {
   // Header with buttons
   const header = document.createElement("div");
   header.className = "sticky-note-header";
-  header.appendChild(createButton("+", "add-btn", () => createNote(note.x, note.y)));
-  header.appendChild(createButton("&#128465;", "trash-btn", () => deleteNote(note, noteDiv)));
-  header.appendChild(createDropdownMenu());
+  header.appendChild(createButton("➕", "add-btn", () => createNote(note.x, note.y))); // Add button with emoji
+  header.appendChild(createButton("🗑️", "trash-btn", () => deleteNote(note, noteDiv))); // Trash button with emoji
+  header.appendChild(createButton("⋮", "menu-btn", () => toggleDropdownMenu(header))); // Menu button with emoji
+
+  // Dropdown menu (initially hidden)
+  const dropdown = createDropdownMenu();
+  header.appendChild(dropdown);
 
   // Textarea for note content
   const textarea = document.createElement("textarea");
@@ -95,31 +99,58 @@ function addNoteToPage(note) {
 function createButton(content, className, onClick) {
   const button = document.createElement("button");
   button.className = className;
-  button.innerHTML = content;
+  button.textContent = content; // Use textContent to ensure emoji consistency
   button.addEventListener("click", onClick);
   return button;
 }
 
 // Create the dropdown menu
 function createDropdownMenu() {
-  const menuButton = createButton("...", "menu-btn");
   const dropdown = document.createElement("div");
-  dropdown.className = "dropdown-menu hidden";
+  dropdown.className = "dropdown-menu my-extension-hidden";
   dropdown.appendChild(
     createButton("Clear All Notes", "", () => {
       document.querySelectorAll(".sticky-note").forEach(note => note.remove());
       notes = [];
       saveNotes();
+      hideDropdownMenu(dropdown); // Hide menu after action
     })
   );
+  return dropdown;
+}
 
-  menuButton.addEventListener("click", () => {
-    dropdown.classList.toggle("hidden");
+// Toggle dropdown menu visibility
+function toggleDropdownMenu(header) {
+  const dropdown = header.querySelector(".dropdown-menu");
+  const isVisible = !dropdown.classList.contains("my-extension-hidden");
+
+  // Hide any other open dropdown menus
+  document.querySelectorAll(".dropdown-menu").forEach(menu => {
+    menu.classList.add("my-extension-hidden");
   });
 
-  const wrapper = document.createElement("div");
-  wrapper.append(menuButton, dropdown);
-  return wrapper;
+  if (!isVisible) {
+    dropdown.classList.remove("my-extension-hidden"); // Show this menu
+    document.addEventListener("click", handleOutsideClick); // Attach listener for outside clicks
+  } else {
+    hideDropdownMenu(dropdown); // Hide this menu if already visible
+  }
+}
+
+// Hide the dropdown menu
+function hideDropdownMenu(dropdown) {
+  dropdown.classList.add("my-extension-hidden");
+  document.removeEventListener("click", handleOutsideClick); // Remove outside click listener
+}
+
+// Handle clicks outside the dropdown menu
+function handleOutsideClick(event) {
+  const dropdowns = document.querySelectorAll(".dropdown-menu");
+  dropdowns.forEach(dropdown => {
+    if (!dropdown.contains(event.target) && !dropdown.previousSibling.contains(event.target)) {
+      hideDropdownMenu(dropdown); // Hide if click is outside
+    }
+  });
 }
 
 // Delete a specific note
