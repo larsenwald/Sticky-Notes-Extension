@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sticky Notes Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      width: 200px;
+    }
+    button {
+      margin: 5px 0;
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <button id="new-note">New Note</button>
+  <button id="delete-all" disabled>Delete All Notes</button>
+  <script src="popup.js"></script>
+</body>
+</html>

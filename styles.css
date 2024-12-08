@@ -2,21 +2,21 @@
   position: absolute;
   width: 200px;
   height: 150px;
-  background: #ffeb3b; /* Default sticky note background color (can be overridden by JS) */
+  background: #ffeb3b;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 0; /* Remove padding to avoid header alignment issues */
+  padding: 0;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  resize: both; /* Enable resizing from any corner */
-  overflow: hidden; /* Prevent unnecessary scrollbars */
+  resize: both;
+  overflow: hidden;
 }
 
 .sticky-note-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.1); /* Initial 20% black overlay */
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 5px;
   height: 30px;
   border-top-left-radius: 5px;
@@ -26,7 +26,7 @@
 
 .right-buttons {
   display: flex;
-  gap: 5px; /* Adds some space between the buttons */
+  gap: 5px;
 }
 
 .sticky-note-header button {
@@ -48,42 +48,97 @@
   color: #333;
 }
 
-.sticky-note textarea {
-  width: calc(100% - 10px); /* Leave padding for the resizer */
-  height: calc(100% - 40px); /* Exclude the header height */
+.note-textarea {
+  width: calc(100% - 10px);
+  height: calc(100% - 40px);
   border: none;
   background: transparent;
   outline: none;
-  resize: none; /* Prevent resizing the textarea itself */
-  font-family: Arial, sans-serif; /* Ensure consistent font family */
-  font-size: 14px; /* Set font size */
-  color: black; /* Force text color to black */
-  margin: 5px; /* Add padding inside the note */
-  box-sizing: border-box; /* Consistent box model */
+  resize: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 18px;
+  color: black;
+  margin: 5px;
+  box-sizing: border-box;
+  overflow: auto; /* Enable scrolling */
+  padding-right: 5px; /* Add padding to accommodate scrollbar */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* For Firefox */
 }
 
-.context-menu {
-  position: fixed;
-  background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1100;
-  min-width: 150px;
-  border-radius: 4px;
-  padding: 5px 0;
+/* Scrollbar styling for WebKit-based browsers */
+.note-textarea::-webkit-scrollbar {
+  width: 6px;
 }
 
-.context-menu-item {
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+.note-textarea::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.context-menu-item:hover {
-  background-color: #f0f0f0;
+.note-textarea::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
 
-.my-extension-hidden {
+.note-textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.format-menu {
+  position: absolute;
   display: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1100;
 }
 
+.format-menu button {
+  all: unset;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+  padding: 5px;
+  color: #333;
+}
+
+.format-menu button:hover {
+  background-color: #e0e0e0;
+  border-radius: 3px;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sticky-note.new-note-animation {
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes bubblePop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.sticky-note.delete-note-animation {
+  animation: bubblePop 0.4s ease-out forwards;
+}
