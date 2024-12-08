@@ -30,13 +30,13 @@ This extension is still evolving! For a list of known limitations and planned fi
 - Click the extension icon to create a note in the center of the screen.
 - Use the `➕` button on a note to add another nearby.
 - Drag the header to move notes or resize them using the bottom-right corner.
-- Delete individual notes with the 🗑️ button or clear all notes via the `...` menu.
+- Delete individual notes with the 🗑️ button or clear all notes with the button in the extension pop-up menu.
 
 
 ## What's In the Code
 
 This extension is built using:
-- **JavaScript** and **CSS** for functionality and styling, respectively.
+- **JavaScript** and **CSS** for functionality and styling, respectively (and html for the extension pop-up menu).
 - **Chrome Extension API**: The magic that lets the notes persist across tabs and sessions.
 
 Everything is modular and easy to understand (I hope). If you’re a developer, feel free to poke around the code and improve it. I’d love to hear what you think!
