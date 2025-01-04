@@ -1,6 +1,8 @@
 // Get references to the buttons
 const newNoteButton = document.getElementById("new-note");
 const deleteAllButton = document.getElementById("delete-all");
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
 
 // Set up the New Note button event listener
 newNoteButton.addEventListener("click", () => {
@@ -45,3 +47,51 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     updateDeleteAllButton();
   }
 });
+document.getElementById('manage-notes').addEventListener('click', () => {
+  chrome.tabs.create({ url: 'manage.html' });
+});
+
+// Add search functionality
+searchInput.addEventListener('input', async () => {
+  const searchTerm = searchInput.value.toLowerCase();
+  const { stickyNotes } = await chrome.storage.local.get('stickyNotes');
+  
+  // Get current tab URL
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  const currentUrl = tabs[0].url;
+  
+  // Filter notes for current page and search term
+  const matchingNotes = (stickyNotes || [])
+    .filter(note => note.url === currentUrl)
+    .filter(note => note.content.toLowerCase().includes(searchTerm));
+
+  // Display results
+  searchResults.innerHTML = '';
+  if (searchTerm) {
+    matchingNotes.forEach(note => {
+      const preview = document.createElement('div');
+      preview.className = 'note-preview';
+      
+      // Create preview text with highlighted search term
+      const textContent = note.content.replace(/<[^>]*>/g, '');
+      const previewText = highlightSearchTerm(textContent, searchTerm);
+      preview.innerHTML = previewText;
+      
+      // Jump to note when clicked
+      preview.addEventListener('click', () => {
+        chrome.tabs.sendMessage(tabs[0].id, { 
+          action: "jumpToNote", 
+          noteId: note.id 
+        });
+        window.close(); // Close popup after jumping
+      });
+      
+      searchResults.appendChild(preview);
+    });
+  }
+});
+
+function highlightSearchTerm(text, searchTerm) {
+  const regex = new RegExp(`(${searchTerm})`, 'gi');
+  return text.replace(regex, '<span class="highlight">$1</span>');
+}

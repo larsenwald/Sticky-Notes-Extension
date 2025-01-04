@@ -3,6 +3,7 @@
   "name": "Sticky Notes Extension",
   "version": "1.2",
   "description": "Add movable, editable tabular sticky notes to any webpage.",
+  "license": "MIT",
   "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -21,5 +22,9 @@
       "js": ["content.js"],
       "css": ["styles.css"]
     }
-  ]
+  ],
+  "web_accessible_resources": [{
+    "resources": ["manage.html", "manage.js"],
+    "matches": ["<all_urls>"]
+  }]
 }

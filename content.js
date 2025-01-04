@@ -23,6 +23,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.action === "checkNotes") {
     const hasNotes = document.querySelectorAll(".sticky-note").length > 0;
     sendResponse({ hasNotes: hasNotes });
+  } else if (message.action === "jumpToNote") {
+    const note = notes.find(n => n.id === message.noteId);
+    if (note) {
+      window.scrollTo({
+        top: note.y,
+        left: note.x,
+        behavior: 'smooth'
+      });
+      
+      const noteElement = document.querySelector(`.sticky-note[data-id="${note.id}"]`);
+      if (noteElement) {
+        // Remove the class first
+        noteElement.classList.remove('highlight-animation');
+        // Force a reflow to restart the animation
+        void noteElement.offsetWidth;
+        // Add the class back
+        noteElement.classList.add('highlight-animation');
+        
+        noteElement.addEventListener('animationend', () => {
+          noteElement.classList.remove('highlight-animation');
+        }, { once: true });
+      }
+    }
   }
 });
 
@@ -71,6 +94,7 @@ function createNote(parentX = null, parentY = null) {
 function addNoteToPage(note) {
   const noteDiv = document.createElement("div");
   noteDiv.className = "sticky-note new-note-animation";
+  noteDiv.setAttribute('data-id', note.id);
   Object.assign(noteDiv.style, {
     top: `${note.y}px`,
     left: `${note.x}px`,
@@ -232,6 +256,7 @@ function showFormatMenu(selection, noteDiv) {
     const extraOffset = 10; // Increase this value if needed
 
     // Try to position above the selection, even if it overlaps the header
+    // Ensure the menu doesn't go above the sticky note's top
     top = noteRect.top + relativeTop - menuHeight - 8 - extraOffset; // 8px padding + extra offset
     left = noteRect.left + relativeLeft;
 

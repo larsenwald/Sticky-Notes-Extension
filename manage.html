@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sticky Notes Manager</title>
+    <style>
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 840px;
+        background-color: #f8f9fa;
+        color: #495057;
+      }
+
+      @media (max-width: 880px) {
+        body {
+          padding: 16px;
+        }
+      }
+
+      .search-container {
+        position: sticky;
+        top: 0;
+        background: #f8f9fa;
+        padding: 15px 0;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 100;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .search-options {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .search-bar {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 16px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+      }
+
+      .search-bar:focus {
+        outline: none;
+        border-color: #4dabf7;
+        box-shadow: 0 2px 8px rgba(77, 171, 247, 0.2);
+      }
+
+      .note-preview {
+        transform: scale(0.7);
+        transform-origin: top left;
+        margin-bottom: -45px;
+        pointer-events: none;
+      }
+
+      .note-preview-container {
+        margin: 10px;
+        transform: scale(0.7);
+        transform-origin: top left;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .note-preview-container:hover {
+        transform: scale(0.75);
+      }
+
+      .preview-only {
+        background: #ffeb3b;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+      }
+
+      .preview-only .sticky-note-header {
+        display: none; /* Hide the header with buttons */
+      }
+
+      .preview-only .note-textarea {
+        height: 100%; /* Take full height since header is hidden */
+        pointer-events: none; /* Prevent text selection */
+      }
+
+      .note-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        gap: 5px;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 0 0 0 5px;
+        pointer-events: auto;
+      }
+
+      .highlight {
+        background-color: yellow;
+        padding: 2px;
+        border-radius: 2px;
+      }
+
+      .site-stats {
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .site-container {
+        margin: 16px 0;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .site-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+      }
+
+      @media (max-width: 768px) {
+        .notes-grid {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+      }
+
+      .site-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .note-count {
+        color: #868e96;
+        font-size: 0.9em;
+        padding: 4px 8px;
+        background: #f1f3f5;
+        border-radius: 12px;
+      }
+
+      .site-controls {
+        display: flex;
+        gap: 8px;
+      }
+
+      .site-link {
+        color: #228be6;
+        text-decoration: none;
+        font-size: 1.1em;
+        font-weight: 500;
+      }
+
+      .site-link:hover {
+        color: #1971c2;
+        text-decoration: underline;
+      }
+
+      .toggle-notes,
+      .delete-site {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .toggle-notes {
+        background: #4dabf7;
+        color: white;
+      }
+
+      .delete-site {
+        background: #ff6b6b;
+        color: white;
+      }
+
+      .toggle-notes:hover,
+      .delete-site:hover {
+        opacity: 0.9;
+      }
+
+      /* Ensure sticky note styles are preserved */
+      .sticky-note {
+        background: #ffeb3b;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+      }
+
+      .site-link {
+        color: #1a73e8;
+        text-decoration: none;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .site-link:hover {
+        text-decoration: underline;
+        color: #1557b0;
+      }
+
+      .preview-header {
+        height: 24px;
+        background: rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 5px 5px 0 0;
+      }
+    </style>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="search-container">
+      <input
+        type="text"
+        id="search-input"
+        class="search-bar"
+        placeholder="Search notes across all sites..."
+        autocomplete="off"
+      />
+      <div id="search-stats"></div>
+    </div>
+    <div id="sites-container"></div>
+    <script src="manage.js"></script>
+  </body>
+</html>
