@@ -35,7 +35,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-document.getElementById('manage-notes').addEventListener('click', () => {
+// Update the event listener to target the SVG icon instead
+document.getElementById('manage-notes-icon').addEventListener('click', () => {
   chrome.tabs.create({ url: 'manage.html' });
 });
 
@@ -58,10 +59,8 @@ searchInput.addEventListener('input', async () => {
   if (searchTerm) {
     if (matchingNotes.length === 0) {
       const noResults = document.createElement('div');
-      noResults.textContent = 'No notes found.';
-      noResults.style.padding = '10px';
-      noResults.style.textAlign = 'center';
-      noResults.style.color = '#555';
+      noResults.textContent = 'No matching notes';
+      noResults.className = 'no-results-message';
       searchResults.appendChild(noResults);
     } else {
       matchingNotes.forEach(note => {
@@ -85,13 +84,6 @@ searchInput.addEventListener('input', async () => {
         searchResults.appendChild(preview);
       });
     }
-  } else {
-    const message = document.createElement('div');
-    message.textContent = 'Please enter a search term.';
-    message.style.padding = '10px';
-    message.style.textAlign = 'center';
-    message.style.color = '#555';
-    searchResults.appendChild(message);
   }
 });
 

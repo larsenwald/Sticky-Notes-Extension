@@ -7,55 +7,86 @@
         font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
         padding: 16px;
         width: 280px;
-        background: #f8f9fa;
+        background: #1a1b1e;
         margin: 0;
+        color: #e4e5e7;
+        padding-top: 0;
       }
 
       .header {
         display: flex;
-        justify-content: flex-end;
-        margin-bottom: 12px;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .search-container {
+        position: relative;
         margin-bottom: 16px;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 12px;
+        width: 16px;
+        height: 16px;
+        color: #8b8c91;
+        pointer-events: none;
+        z-index: 1;
+        display: flex;
+        align-items: center;
       }
 
       #search-input {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #dee2e6;
-        border-radius: 12px;
+        padding: 12px 16px 12px 40px;
         font-size: 14px;
-        background: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid #2c2e33;
+        border-radius: 12px;
         box-sizing: border-box;
+        background: #2c2e33;
+        color: #e4e5e7;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         transition: all 0.2s ease;
+        height: 40px;
+        line-height: 40px;
       }
 
       #search-input:focus {
         outline: none;
-        border-color: #4dabf7;
-        box-shadow: 0 2px 8px rgba(77, 171, 247, 0.2);
+        border-color: #4f6eff;
+        box-shadow: 0 2px 8px rgba(79, 110, 255, 0.2);
+      }
+
+      #search-input::placeholder {
+        color: #8b8c91;
       }
 
       #search-results {
         max-height: 200px;
         overflow-y: auto;
-        border-radius: 8px;
-        background: white;
         margin-top: 8px;
+      }
+
+      .no-results-message {
+        font-size: 12px;
+        color: #8b8c91;
+        margin-top: 6px;
+        margin-left: 4px;
       }
 
       .note-preview {
         padding: 10px 12px;
-        border-bottom: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 4px;
+        background: #2c2e33;
         cursor: pointer;
         transition: background-color 0.2s ease;
+        color: #e4e5e7;
       }
 
       .note-preview:hover {
-        background-color: #e9ecef;
+        background-color: #3a3d44;
       }
 
       #new-note {
@@ -65,16 +96,16 @@
         border-radius: 12px;
         font-size: 14px;
         font-weight: 500;
-        background-color: #4dabf7;
+        background-color: #4f6eff;
         color: white;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(77, 171, 247, 0.2);
+        box-shadow: 0 2px 4px rgba(79, 110, 255, 0.2);
       }
 
       #new-note:hover {
-        background-color: #3793dd;
-        box-shadow: 0 2px 8px rgba(77, 171, 247, 0.3);
+        background-color: #3b5bff;
+        box-shadow: 0 2px 8px rgba(79, 110, 255, 0.3);
         transform: translateY(-1px);
       }
 
@@ -83,7 +114,7 @@
       }
 
       .highlight {
-        background-color: rgba(255, 235, 59, 0.3);
+        background-color: rgba(255, 208, 18, 0.2);
         border-radius: 2px;
       }
 
@@ -91,42 +122,53 @@
         background: none;
         border: none;
         padding: 8px;
-        cursor: pointer;
-        border-radius: 50%;
-        transition: background-color 0.2s ease;
-      }
-
-      #manage-notes:hover {
-        background-color: #e9ecef;
+        color: #e4e5e7;
       }
 
       .settings-icon {
+        cursor: pointer;
         width: 20px;
         height: 20px;
-        opacity: 0.7;
+        opacity: 0.8;
+        transition: transform 0.1s ease, opacity 0.1s ease;
+      }
+      .settings-icon:hover {
+        transform: scale(1.2);
+        opacity: 1;
       }
     </style>
   </head>
   <body>
     <div class="header">
-      <button id="manage-notes" title="Manage All Notes">
-        <svg
-          class="settings-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-          />
-          <path
-            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
-          />
-        </svg>
-      </button>
+      <h1>Sticky Notes v1.4</h1>
+      <svg
+        title="Manage All Notes"
+        id="manage-notes-icon"
+        class="settings-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+        />
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+        />
+      </svg>
     </div>
     <div class="search-container">
+      <svg
+        class="search-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
       <input
         type="text"
         id="search-input"
