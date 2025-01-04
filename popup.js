@@ -34,6 +34,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     updateDeleteAllButton();
   }
 });
+
 document.getElementById('manage-notes').addEventListener('click', () => {
   chrome.tabs.create({ url: 'manage.html' });
 });
@@ -55,26 +56,42 @@ searchInput.addEventListener('input', async () => {
   // Display results
   searchResults.innerHTML = '';
   if (searchTerm) {
-    matchingNotes.forEach(note => {
-      const preview = document.createElement('div');
-      preview.className = 'note-preview';
-      
-      // Create preview text with highlighted search term
-      const textContent = note.content.replace(/<[^>]*>/g, '');
-      const previewText = highlightSearchTerm(textContent, searchTerm);
-      preview.innerHTML = previewText;
-      
-      // Jump to note when clicked
-      preview.addEventListener('click', () => {
-        chrome.tabs.sendMessage(tabs[0].id, { 
-          action: "jumpToNote", 
-          noteId: note.id 
+    if (matchingNotes.length === 0) {
+      const noResults = document.createElement('div');
+      noResults.textContent = 'No notes found.';
+      noResults.style.padding = '10px';
+      noResults.style.textAlign = 'center';
+      noResults.style.color = '#555';
+      searchResults.appendChild(noResults);
+    } else {
+      matchingNotes.forEach(note => {
+        const preview = document.createElement('div');
+        preview.className = 'note-preview';
+        
+        // Create preview text with highlighted search term
+        const textContent = note.content.replace(/<[^>]*>/g, '');
+        const previewText = highlightSearchTerm(textContent, searchTerm);
+        preview.innerHTML = previewText;
+        
+        // Jump to note when clicked
+        preview.addEventListener('click', () => {
+          chrome.tabs.sendMessage(tabs[0].id, { 
+            action: "jumpToNote", 
+            noteId: note.id 
+          });
+          window.close(); // Close popup after jumping
         });
-        window.close(); // Close popup after jumping
+        
+        searchResults.appendChild(preview);
       });
-      
-      searchResults.appendChild(preview);
-    });
+    }
+  } else {
+    const message = document.createElement('div');
+    message.textContent = 'Please enter a search term.';
+    message.style.padding = '10px';
+    message.style.textAlign = 'center';
+    message.style.color = '#555';
+    searchResults.appendChild(message);
   }
 });
 

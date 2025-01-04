@@ -26,16 +26,8 @@ class NotesManager {
 
   async handleSearch() {
     const searchTerm = this.searchInput.value.toLowerCase();
-    const searchScope = this.searchScope.value;
     
     let filteredNotes = this.allNotes;
-    
-    if (searchScope === 'current') {
-      filteredNotes = this.allNotes.filter(note => {
-        const noteHost = new URL(note.url).hostname;
-        return noteHost === this.currentSite;
-      });
-    }
 
     if (searchTerm) {
       filteredNotes = filteredNotes.filter(note => {
@@ -67,6 +59,16 @@ class NotesManager {
   renderSites(siteMap, searchTerm = '') {
     this.sitesContainer.innerHTML = '';
     
+    if (searchTerm && Object.keys(siteMap).length === 0) {
+      const message = document.createElement('div');
+      message.textContent = 'No notes found.';
+      message.style.textAlign = 'center';
+      message.style.padding = '20px';
+      message.style.color = '#555';
+      this.sitesContainer.appendChild(message);
+      return;
+    }
+
     Object.entries(siteMap).forEach(([site, notes]) => {
       const siteEl = document.createElement('div');
       siteEl.className = 'site-container';
@@ -74,10 +76,14 @@ class NotesManager {
       const header = document.createElement('div');
       header.className = 'site-header';
       
+      const noteCountText = searchTerm 
+        ? `${notes.length} note${notes.length !== 1 ? 's' : ''} found` 
+        : `${notes.length} note${notes.length !== 1 ? 's' : ''}`;
+
       header.innerHTML = `
         <div class="site-info">
           <a href="${notes[0].url}" class="site-link">${site}</a>
-          <span class="note-count">${notes.length} note${notes.length !== 1 ? 's' : ''}</span>
+          <span class="note-count">${noteCountText}</span>
         </div>
         <div class="site-controls">
           <button class="toggle-notes">Show Notes</button>
@@ -108,6 +114,16 @@ class NotesManager {
       siteEl.appendChild(notesGrid);
       this.sitesContainer.appendChild(siteEl);
     });
+
+    // Handle case when no sites are available
+    if (Object.keys(siteMap).length === 0 && !searchTerm) {
+      const message = document.createElement('div');
+      message.textContent = 'No saved notes to display.';
+      message.style.textAlign = 'center';
+      message.style.padding = '20px';
+      message.style.color = '#555';
+      this.sitesContainer.appendChild(message);
+    }
   }
 
   createNotePreview(note, searchTerm = '') {
