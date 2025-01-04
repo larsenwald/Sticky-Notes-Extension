@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Sticky Notes Extension",
-  "version": "1.2",
+  "version": "1.3",
   "description": "Add movable, editable tabular sticky notes to any webpage.",
   "license": "MIT",
   "permissions": ["storage"],
