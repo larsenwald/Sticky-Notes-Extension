@@ -26,7 +26,7 @@ This extension is still evolving! For a list of known limitations and planned fi
 
 ### Add and Manage Notes:
 
-- Click the extension icon to create a note in the center of the screen.
+- Click the extension icon to create a new note in the center of the screen.
 - Use the `➕` button on a note to add another nearby.
 - Drag the header to move notes or resize them using the bottom-right corner.
 - Delete individual notes with the 🗑️ button or clear all notes with the button in the extension pop-up menu.
@@ -35,8 +35,8 @@ This extension is still evolving! For a list of known limitations and planned fi
 
 This extension is built using:
 
-- **JavaScript** and **CSS** for functionality and styling, respectively (and html for the extension pop-up menu).
-- **Chrome Extension API**: The magic that lets the notes persist across tabs and sessions.
+- **HTML**, **CSS**, **JavaScript**.
+- **Chrome Extension API**.
 
 Everything is modular and easy to understand (I hope). If you’re a developer, feel free to poke around the code and improve it. I’d love to hear what you think!
 
@@ -44,12 +44,12 @@ Everything is modular and easy to understand (I hope). If you’re a developer, 
 
 I made this project mostly for myself, but it’s open for anyone who wants to use or contribute to it. If you want to:
 
-1. **Report Bugs**: Found something that doesn’t work? Open an issue, and I’ll do my best to fix it.
-2. **Suggest Features**: Have an idea that would make this even better? Let me know, and I’ll see what I can do.
+1. **Report Bugs**: Please, if you come across something that doesn't work, open an issue and I'll fix it ASAP.
+2. **Suggest Features**: Have an idea that would make this even better? Open an issue and I'll see what I can do.
 3. **Contribute**: If you’re a developer, feel free to fork the repo, make improvements, and submit a pull request.
 
 ## Enjoy!
 
-This extension was born out of a small annoyance that turned into a fun little coding journey. It’s simple, functional, and (I think) pretty cool. If you’re someone who loves reading online and wants a lightweight way to take notes, I hope this extension makes your life a little easier.
+This extension was born out of a small annoyance that turned into a fun little coding journey. It’s simple, functional, and (I think) pretty cool. If you’re someone who loves reading online and wants a lightweight way to take notes, I hope this extension makes your life a little easier. I'm constantly iterating it, so be sure to check back for updates.
 
 Thanks for checking it out, and happy note-taking! 📝✨
