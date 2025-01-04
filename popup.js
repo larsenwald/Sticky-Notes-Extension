@@ -1,6 +1,5 @@
 // Get references to the buttons
 const newNoteButton = document.getElementById("new-note");
-const deleteAllButton = document.getElementById("delete-all");
 const searchInput = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');
 
@@ -11,18 +10,6 @@ newNoteButton.addEventListener("click", () => {
     updateDeleteAllButton(); // Immediately check to see if the delete button should be enabled
     window.close(); // Close the popup after the button is clicked
   });
-});
-
-// Set up the Delete All button event listener
-deleteAllButton.addEventListener("click", () => {
-  const userConfirmed = confirm("Are you sure you want to delete all sticky notes?");
-  if (userConfirmed) {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: "deleteAllNotes" });
-      updateDeleteAllButton(); // Immediately update button state after deletion
-      window.close(); // Close the popup after the button is clicked
-    });
-  }
 });
 
 // Function to check if there are any notes and update the Delete All button state
