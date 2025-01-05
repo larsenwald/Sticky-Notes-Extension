@@ -117,12 +117,15 @@ class NotesManager {
 
     // Handle case when no sites are available
     if (Object.keys(siteMap).length === 0 && !searchTerm) {
-      const message = document.createElement('div');
-      message.textContent = 'No saved notes to display.';
-      message.style.textAlign = 'center';
-      message.style.padding = '20px';
-      message.style.color = '#555';
-      this.sitesContainer.appendChild(message);
+      const emptyState = document.createElement('div');
+      emptyState.className = 'empty-state';
+      emptyState.innerHTML = `
+        <div class="empty-state-content">
+          <h2>No Notes Found</h2>
+          <p>You haven't created any sticky notes yet. Click the extension icon on any webpage to create your first note!</p>
+        </div>
+      `;
+      this.sitesContainer.appendChild(emptyState);
     }
   }
 
