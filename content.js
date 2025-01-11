@@ -49,6 +49,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+// Add these SVG strings at the top of your file
+const SVG_ICONS = {
+  add: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+    <line x1="4" y1="12" x2="20" y2="12"></line>
+    <line x1="12" y1="4" x2="12" y2="20"></line>
+  </svg>`,
+  delete: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+    <path d="M5 8h14"></path>
+    <path d="M7 8v11a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V8"></path>
+    <path d="M9 4h6"></path>
+  </svg>`
+};
+
 // Create a new sticky note
 function createNote(parentX = null, parentY = null) {
   const currentUrl = window.location.href;
@@ -112,12 +125,12 @@ function addNoteToPage(note) {
   const header = document.createElement("div");
   header.className = "sticky-note-header";
 
-  header.appendChild(createButton("➕", "add-btn", () => createNote(note.x, note.y)));
+  header.appendChild(createButton("add", "add-btn", () => createNote(note.x, note.y)));
 
   const rightButtons = document.createElement("div");
   rightButtons.className = "right-buttons";
   rightButtons.appendChild(
-    createButton("🗑️", "trash-btn", () => {
+    createButton("delete", "trash-btn", () => {
       deleteNote(note, noteDiv);
       notifyPopup();
     })
@@ -418,10 +431,10 @@ document.addEventListener('selectionchange', () => {
 });
 
 // Create a button with specified content and event listener
-function createButton(content, className, onClick) {
+function createButton(icon, className, onClick) {
   const button = document.createElement("button");
   button.className = className;
-  button.textContent = content; // Use textContent to ensure emoji consistency
+  button.innerHTML = SVG_ICONS[icon]; // Use SVG instead of emoji
   button.addEventListener("click", onClick);
   return button;
 }
