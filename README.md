@@ -4,6 +4,9 @@ Welcome to my Sticky Notes Chrome Extension!
 
 This is a little project I built because I've been reading a lot of online textbooks and articles, and I've been wanting a way to leave sticky notes on webpages that don’t vanish when I close the tab or refresh the page. All the bookmarking tools I looked into didn't let me jot down my thoughts directly on the page, so I figured I'd create something **simple** that would feel as natural as sticking a Post-it on a book or a monitor.
 
+https://github.com/user-attachments/assets/c63c6529-9e66-47db-bebc-6723bb85bdc8
+
+
 ## What It Does
 
 - **Sticky Notes That Stick**: Add a sticky note anywhere on a webpage, and it stays tied to that page—even if you close the tab and come back later.
@@ -25,6 +28,7 @@ This extension is still evolving! For a list of known limitations and planned fi
    - Go to `chrome://extensions`, enable "Developer Mode," and click "Load unpacked."
 
 ### Add and Manage Notes:
+
 
 - Click the extension icon to create a new note in the center of the screen.
 - Use the `➕` button on a note to add another nearby.
